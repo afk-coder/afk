@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>角色授权</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link th:href="@{/support/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/support/css/font-awesome.css}" rel="stylesheet">
+    <link th:href="@{/support/ztree/css/metroStyle/metroStyle.css}" rel="stylesheet">
+    <link th:href="@{/support/css/animate.css}" rel="stylesheet">
+    <link th:href="@{/support/css/style.css}" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <input type="hidden" id="id" th:value="${role.id}">
+                    <button class="btn btn-primary btn-sm" type="button" id="grant">授权</button>
+                    <button class="btn btn-success btn-sm" type="button" onclick="parent.layerClose()">取消</button>
+                </div>
+                <div class="ibox-content">
+                    <ul id="ztree" class="ztree"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 全局js -->
+<script th:src="@{/support/js/jquery.min.js}"></script>
+<script th:src="@{/support/js/bootstrap.min.js}"></script>
+<!-- 自定义js -->
+<script th:src="@{/support/js/content.js}"></script>
+<!-- jsTree plugin javascript -->
+<script th:src="@{/support/ztree/js/jquery.ztree.core.js}"></script>
+<script th:src="@{/support/ztree/js/jquery.ztree.excheck.js}"></script>
+<script th:src="@{/support/js/plugins/layer/layer.min.js}"></script>
+<script type="text/javascript">
+    var setting = {
+        check: {
+            enable: true,
+            chkboxType: { "Y": "ps", "N": "s" }
+        },
+        data: {
+            simpleData: {
+                enable: true,
+                idKey: "id",
+                pIdKey: "parentId",
+                rootPId: 0
+            }
+        }
+    };
+    $(document).ready(function () {
+        $.ajax({
+            type: "POST",
+            url: "/auth/role/listCheck?id="+$('#id').val(),
+            dataType:'json',
+            success: function(data){
+                $.fn.zTree.init($("#ztree"), setting, data);
+            }
+        });
+
+        $('#grant').click(function () {
+            var treeObj = $.fn.zTree.getZTreeObj("ztree");
+            //获取选中
+            var nodes = treeObj.getCheckedNodes(true);
+            //获取不选中
+            var nodes_uncheck = treeObj.getCheckedNodes(false);
+            var ids = [];
+            var ids_uncheck = [];
+            $.each(nodes, function (index, data) {
+                ids.push(data.id);
+            });
+            $.each(nodes_uncheck, function (index, data) {
+                ids_uncheck.push(data.id);
+            });
+            var lid = layer.msg('正在处理中，请稍后', {icon: 16, shade: 0.4, time: false});
+            $.ajax({
+                type: 'post',
+                url: '/auth/role/grant',
+                data: {'roleId': $('#id').val(), 'ids': JSON.stringify(ids), 'ids_uncheck': JSON.stringify(ids_uncheck)},
+                success: function (data) {
+                    layer.close(lid);
+                    if (data.success) {
+                        parent.layer.msg(data.message, {icon: 1});
+                        parent.layerClose();
+                    } else {
+                        layer.msg(data.message, {icon: 5});
+                    }
+                }
+            });
+        });
+    });
+
+</script>
+</body>
+
+</html>
+

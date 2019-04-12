@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>H+ 后台主题UI框架 - 树形视图</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link th:href="@{/support/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/support/css/font-awesome.css}" rel="stylesheet">
+    <link th:href="@{/support/ztree/css/metroStyle/metroStyle.css}" rel="stylesheet">
+    <link th:href="@{/support/css/animate.css}" rel="stylesheet">
+    <link th:href="@{/support/css/style.css}" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <button class="btn btn-primary btn-sm" type="button" id="add">添加</button>
+                    <button class="btn btn-success btn-sm" type="button" id="update">修改</button>
+                    <button class="btn btn-danger btn-sm" type="button" id="delete">删除</button>
+                </div>
+                <div class="ibox-content">
+                    <ul id="ztree" class="ztree"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 全局js -->
+<script th:src="@{/support/js/jquery.min.js}"></script>
+<script th:src="@{/support/js/bootstrap.min.js}"></script>
+<!-- 自定义js -->
+<script th:src="@{/support/js/content.js}"></script>
+<!-- jsTree plugin javascript -->
+<script th:src="@{/support/ztree/js/jquery.ztree.core.js}"></script>
+<script th:src="@{/support/js/plugins/layer/layer.min.js}"></script>
+<script type="text/javascript">
+    var layerId;
+    var setting = {
+        data: {
+            simpleData: {
+                enable: true,
+                idKey: "id",
+                pIdKey: "parentId",
+                rootPId: 0
+            }
+        }
+    };
+    $(document).ready(function () {
+        $.ajax({
+            type: "POST",
+            url: "/auth/permission/list",
+            dataType:'json',
+            success: function(data){
+                $.fn.zTree.init($("#ztree"), setting, data);
+            }
+        });
+
+        $('#add').click(function () {
+            var treeObj = $.fn.zTree.getZTreeObj("ztree");
+            var nodes = treeObj.getSelectedNodes(true);
+            var parentId;
+            if(nodes.length > 0 && nodes.length < 2) {
+                parentId = nodes[0].id;
+            } else if(nodes.length == 0) {
+                parentId = 0;
+            } else {
+                layer.msg('只能选择一个节点，或不选择节点', {icon: 5});
+                return;
+            }
+            layerId = layer.open({
+                title: '功能管理新增',
+                maxmin: false,
+                type: 2,
+                content: '/auth/permission/add?parentId='+parentId,
+                area: ['600px', '700px']
+            });
+        });
+
+        $('#update').click(function () {
+            var treeObj = $.fn.zTree.getZTreeObj("ztree");
+            var nodes = treeObj.getSelectedNodes(true);
+            if(isSelect(nodes.length)) {
+                layerId = layer.open({
+                    title: '功能管理修改',
+                    maxmin: false,
+                    type: 2,
+                    content: '/auth/permission/update?id='+nodes[0].id,
+                    area: ['600px', '700px']
+                });
+            }
+        });
+
+        $('#delete').click(function () {
+            var treeObj = $.fn.zTree.getZTreeObj("ztree");
+            var nodes = treeObj.getSelectedNodes(true);
+            if(isSelect(nodes.length)) {
+                layer.confirm('确认删除该菜单？', {
+                    btn: ['确定','取消'] //按钮
+                }, function(){
+                    var lid = layer.msg('正在处理中，请稍后', {icon: 16, shade: 0.4, time: false});
+                    $.ajax({
+                        type: "POST",
+                        url: "/auth/permission/delete",
+                        dataType:'json',
+                        data:{
+                            id: nodes[0].id
+                        },
+                        success: function(data){
+                            layer.close(lid);
+                            if (data.success) {
+                                refreshTree(nodes[0]);
+                                layer.msg(data.message, {icon: 1});
+                            } else {
+                                layer.msg(data.message, {icon: 5});
+                            }
+                        }
+                    });
+                }, function(){
+                });
+            }
+        });
+        var isSelect = function (length) {
+            if(length > 1) {
+                layer.msg('只能选择一个节点', {icon: 5});
+                return false;
+            }
+            if(length == 0) {
+                layer.msg('请选择一个节点', {icon: 5});
+                return false;
+            }
+            return true;
+        }
+    });
+
+    function refreshTree(node) {
+        //刷新树形
+        var treeObj = $.fn.zTree.getZTreeObj("ztree");
+        treeObj.reAsyncChildNodes(node, "refresh");
+    }
+
+    function layerClose() {
+        layer.close(layerId);
+    }
+</script>
+</body>
+</html>
+
