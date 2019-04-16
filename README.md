@@ -24,8 +24,7 @@ bootstrap
 
 #### 使用说明
 
-1. 项目截图
-2. ![输入图片说明](https://images.gitee.com/uploads/images/2019/0416/162503_0eee79e5_1779955.png "login.png")
-3.![输入图片说明](https://images.gitee.com/uploads/images/2019/0416/162516_2248d4fa_1779955.png "QQ图片20190416162409.png")
+![输入图片说明](https://images.gitee.com/uploads/images/2019/0416/162503_0eee79e5_1779955.png "login.png")
+![输入图片说明](https://images.gitee.com/uploads/images/2019/0416/162516_2248d4fa_1779955.png "QQ图片20190416162409.png")
 
 
