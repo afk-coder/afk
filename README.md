@@ -1,11 +1,20 @@
 # afk
 
 #### 介绍
-spring boot2.1 shiro
+afk使用spring boot 框架实现基础权限管理，shiro权限登录，spring-data-jpa 作为orm
 
 #### 软件架构
 软件架构说明
 
+使用框架以下：
+
+spring boot2.1
+
+apache shiro
+
+spring-data-jpa
+
+bootstrap
 
 #### 安装教程
 
