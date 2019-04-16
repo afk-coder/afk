@@ -2,12 +2,10 @@ package com.fux.afk.auth.controller;
 
 import com.fux.afk.auth.entity.Permission;
 import com.fux.afk.auth.service.PermissionService;
-import com.fux.afk.support.vo.JsTreeJson;
 import com.fux.afk.support.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
