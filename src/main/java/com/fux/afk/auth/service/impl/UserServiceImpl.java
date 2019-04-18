@@ -6,6 +6,8 @@ import com.fux.afk.auth.entity.UserRole;
 import com.fux.afk.auth.repository.UserRepository;
 import com.fux.afk.auth.repository.UserRoleRepository;
 import com.fux.afk.auth.service.UserService;
+import com.fux.afk.support.druid.DataSourceType;
+import com.fux.afk.support.druid.DynamicDataSourceContextHolder;
 import com.fux.afk.support.vo.BootstrapTable;
 import com.fux.afk.support.vo.ResultVo;
 import com.fux.afk.support.vo.SearchVo;
