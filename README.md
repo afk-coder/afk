@@ -23,6 +23,7 @@ bootstrap
 3. 更新好项目以后运行AfkApplication
 4. 数据库源码在db下
 5. 初始登录用户名：admin 密码：123456
+6. 有问题请发邮件： afk.u@qq.com
 
 #### 使用说明
 
