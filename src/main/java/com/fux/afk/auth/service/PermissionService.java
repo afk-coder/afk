@@ -1,6 +1,6 @@
 package com.fux.afk.auth.service;
 
-import com.fux.afk.auth.entity.Permission;
+import com.fux.afk.auth.entity.SysPermission;
 import com.fux.afk.support.vo.ResultVo;
 
 import java.util.List;
@@ -10,13 +10,13 @@ import java.util.List;
  */
 public interface PermissionService {
 
-    List<Permission> getListByRoleId(Integer roleId);
+    List<SysPermission> getListByRoleId(Integer roleId);
 
-    List<Permission> list();
+    List<SysPermission> list();
 
-    Permission getPermissionById(Integer id);
+    SysPermission getPermissionById(Integer id);
 
-    ResultVo saveOrUpdate(Permission permission);
+    ResultVo saveOrUpdate(SysPermission permission);
 
     ResultVo delete(Integer id);
 }

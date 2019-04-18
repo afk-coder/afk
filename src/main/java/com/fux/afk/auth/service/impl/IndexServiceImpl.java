@@ -1,6 +1,6 @@
 package com.fux.afk.auth.service.impl;
 
-import com.fux.afk.auth.entity.Permission;
+import com.fux.afk.auth.entity.SysPermission;
 import com.fux.afk.auth.repository.PermissionRepository;
 import com.fux.afk.auth.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class IndexServiceImpl implements IndexService {
     private PermissionRepository permissoinRepository;
 
     @Override
-    public List<Permission> findPermissionByUserId(Integer userId) {
+    public List<SysPermission> findPermissionByUserId(Integer userId) {
         return permissoinRepository.findAllByUserId(userId);
     }
 }

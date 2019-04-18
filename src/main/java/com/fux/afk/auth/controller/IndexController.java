@@ -1,7 +1,7 @@
 package com.fux.afk.auth.controller;
 
-import com.fux.afk.auth.entity.Permission;
-import com.fux.afk.auth.entity.User;
+import com.fux.afk.auth.entity.SysPermission;
+import com.fux.afk.auth.entity.SysUser;
 import com.fux.afk.auth.service.IndexService;
 import com.fux.afk.auth.shiro.CustomRealm;
 import org.apache.shiro.SecurityUtils;
@@ -30,8 +30,8 @@ public class IndexController {
         if (!subject.isAuthenticated()) {
             return "redirect:/login";
         }
-        User user = (User) subject.getSession().getAttribute(CustomRealm.SESSION_USER_KEY);
-        List<Permission> list = indexService.findPermissionByUserId(user.getId());
+        SysUser user = (SysUser) subject.getSession().getAttribute(CustomRealm.SESSION_USER_KEY);
+        List<SysPermission> list = indexService.findPermissionByUserId(user.getId());
         model.addAttribute("list", list);
         return "index";
     }

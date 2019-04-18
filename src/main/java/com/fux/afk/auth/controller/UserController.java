@@ -1,11 +1,9 @@
 package com.fux.afk.auth.controller;
 
-import com.fux.afk.auth.entity.Role;
-import com.fux.afk.auth.entity.User;
+import com.fux.afk.auth.entity.SysRole;
+import com.fux.afk.auth.entity.SysUser;
 import com.fux.afk.auth.service.RoleService;
 import com.fux.afk.auth.service.UserService;
-import com.fux.afk.support.druid.DataSourceType;
-import com.fux.afk.support.druid.DynamicDataSourceContextHolder;
 import com.fux.afk.support.vo.BootstrapTable;
 import com.fux.afk.support.vo.ResultVo;
 import com.fux.afk.support.vo.SearchVo;
@@ -48,19 +46,19 @@ public class UserController {
     public String addView(HttpServletRequest request, Model model) {
         String id = request.getParameter("id");
         if(!StringUtils.isEmpty(id)) {
-            User user = userService.getUserById(Integer.valueOf(id));
+            SysUser user = userService.getUserById(Integer.valueOf(id));
             model.addAttribute("user", user);
-            List<Role> existsRole = roleService.getListByUserId(Integer.valueOf(id));
+            List<SysRole> existsRole = roleService.getListByUserId(Integer.valueOf(id));
             model.addAttribute("existsRole", existsRole.get(0));
         }
-        List<Role> listRole = roleService.findAll();
+        List<SysRole> listRole = roleService.findAll();
         model.addAttribute("listRole", listRole);
         return "/auth/user/add";
     }
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
     @ResponseBody
-    public ResultVo add(User user, Integer roleId) {
+    public ResultVo add(SysUser user, Integer roleId) {
         return userService.saveOrUpdate(user, roleId);
     }
 

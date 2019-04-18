@@ -1,7 +1,7 @@
 package com.fux.afk.auth.service.impl;
 
 
-import com.fux.afk.auth.entity.Permission;
+import com.fux.afk.auth.entity.SysPermission;
 import com.fux.afk.auth.repository.PermissionRepository;
 import com.fux.afk.auth.service.PermissionService;
 import com.fux.afk.support.vo.ResultVo;
@@ -20,22 +20,22 @@ public class PermissionServiceImpl implements PermissionService {
     private PermissionRepository permissionRepository;
 
     @Override
-    public List<Permission> getListByRoleId(Integer roleId) {
+    public List<SysPermission> getListByRoleId(Integer roleId) {
         return permissionRepository.findAllByRoleId(roleId);
     }
 
     @Override
-    public List<Permission> list() {
+    public List<SysPermission> list() {
         return permissionRepository.findAll();
     }
 
     @Override
-    public Permission getPermissionById(Integer id) {
+    public SysPermission getPermissionById(Integer id) {
         return permissionRepository.getOne(id);
     }
 
     @Override
-    public ResultVo saveOrUpdate(Permission permission) {
+    public ResultVo saveOrUpdate(SysPermission permission) {
         try {
             permissionRepository.save(permission);
             return ResultVo.successInfo("保存成功！");

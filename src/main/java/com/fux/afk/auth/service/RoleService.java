@@ -1,6 +1,6 @@
 package com.fux.afk.auth.service;
 
-import com.fux.afk.auth.entity.Role;
+import com.fux.afk.auth.entity.SysRole;
 import com.fux.afk.support.vo.BootstrapTable;
 import com.fux.afk.support.vo.ResultVo;
 import com.fux.afk.support.vo.SearchVo;
@@ -12,17 +12,17 @@ import java.util.List;
  */
 public interface RoleService {
 
-    List<Role> getListByUserId(Integer userId);
+    List<SysRole> getListByUserId(Integer userId);
 
     BootstrapTable list(SearchVo search);
 
-    Role getRoleById(Integer id);
+    SysRole getRoleById(Integer id);
 
-    ResultVo saveOrUpdate(Role user);
+    ResultVo saveOrUpdate(SysRole user);
 
     ResultVo delete(String id);
 
     ResultVo saveGrant(String roleId, String ids, String idsUncheck);
 
-    List<Role> findAll();
+    List<SysRole> findAll();
 }

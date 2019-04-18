@@ -1,8 +1,7 @@
 package com.fux.afk.auth.controller;
 
 import com.fux.afk.auth.entity.Permission;
-import com.fux.afk.auth.entity.Role;
-import com.fux.afk.auth.entity.User;
+import com.fux.afk.auth.entity.SysRole;
 import com.fux.afk.auth.service.PermissionService;
 import com.fux.afk.auth.service.RoleService;
 import com.fux.afk.support.vo.BootstrapTable;
@@ -50,7 +49,7 @@ public class RoleController {
     public String addView(HttpServletRequest request, Model model) {
         String id = request.getParameter("id");
         if(!StringUtils.isEmpty(id)) {
-            Role role = roleService.getRoleById(Integer.valueOf(id));
+            SysRole role = roleService.getRoleById(Integer.valueOf(id));
             model.addAttribute("role", role);
         }
         return "/auth/role/add";
@@ -58,7 +57,7 @@ public class RoleController {
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
     @ResponseBody
-    public ResultVo add(Role role) {
+    public ResultVo add(SysRole role) {
         return roleService.saveOrUpdate(role);
     }
 
@@ -72,7 +71,7 @@ public class RoleController {
     @RequestMapping(value = "grant", method = RequestMethod.GET)
     public String grantView(HttpServletRequest request, Model model) {
         String id = request.getParameter("id");
-        Role role = roleService.getRoleById(Integer.valueOf(id));
+        SysRole role = roleService.getRoleById(Integer.valueOf(id));
         List<Permission> list = permissionService.getListByRoleId(role.getId());
         List<Integer> checkIds = new ArrayList<>();
         for (Permission permission : list) {

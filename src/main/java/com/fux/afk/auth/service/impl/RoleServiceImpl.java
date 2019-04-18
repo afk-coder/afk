@@ -1,12 +1,9 @@
 package com.fux.afk.auth.service.impl;
 
-import com.alibaba.druid.support.json.JSONUtils;
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fux.afk.auth.entity.Role;
-import com.fux.afk.auth.entity.RolePermission;
-import com.fux.afk.auth.entity.User;
+import com.fux.afk.auth.entity.SysRole;
+import com.fux.afk.auth.entity.SysRolePermission;
 import com.fux.afk.auth.repository.RolePermissionRepository;
 import com.fux.afk.auth.repository.RoleRepository;
 import com.fux.afk.auth.service.RoleService;
@@ -24,7 +21,6 @@ import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,30 +37,30 @@ public class RoleServiceImpl implements RoleService {
     private RolePermissionRepository rolePermissionRepository;
 
     @Override
-    public List<Role> getListByUserId(Integer userId) {
+    public List<SysRole> getListByUserId(Integer userId) {
        return roleRepository.findAllByUserId(userId);
     }
 
     @Override
     public BootstrapTable list(SearchVo search) {
-        Role role = new Role();
+        SysRole role = new SysRole();
         role.setRoleName(MapUtils.getString(search.getArgs(), "roleName"));
-        Example<Role> example = Example.of(role);
+        Example<SysRole> example = Example.of(role);
         Pageable pageable = PageRequest.of(search.getPage() - 1, search.getRows());
-        Page<Role> page = roleRepository.findAll(example, pageable);
+        Page<SysRole> page = roleRepository.findAll(example, pageable);
         return new BootstrapTable(page);
     }
 
     @Override
-    public Role getRoleById(Integer id) {
+    public SysRole getRoleById(Integer id) {
         return roleRepository.getOne(id);
     }
 
     @Override
-    public ResultVo saveOrUpdate(Role role) {
+    public ResultVo saveOrUpdate(SysRole role) {
         try {
             //判断用户名是否存在
-            Role existsRole = roleRepository.getRoleByRoleName(role.getRoleName());
+            SysRole existsRole = roleRepository.getRoleByRoleName(role.getRoleName());
             if(StringUtils.isEmpty(role.getId())) {
                 if(null != existsRole) {
                     return ResultVo.failedInfo("角色已存在,请重新输入...");
@@ -98,19 +94,19 @@ public class RoleServiceImpl implements RoleService {
     public ResultVo saveGrant(String roleId, String ids, String idsUncheck) {
         try {
             //角色权限
-            List<RolePermission> rpList = new ArrayList<>();
+            List<SysRolePermission> rpList = new ArrayList<>();
             //删除权限
-            List<RolePermission> rpunList = new ArrayList<>();
+            List<SysRolePermission> rpunList = new ArrayList<>();
             //该角色勾选的权限
             ObjectMapper mapper = new ObjectMapper();
             List<Object> list = mapper.readValue(ids, new TypeReference<List<Object>>(){});
             for (Object o : list) {
                 //获取该角色已存在的权限
-                RolePermission rolePermission = new RolePermission();
+                SysRolePermission rolePermission = new SysRolePermission();
                 rolePermission.setRoleId(Integer.valueOf(roleId));
                 rolePermission.setPermissionId(Integer.valueOf(o.toString()));
-                Example<RolePermission> example = Example.of(rolePermission);
-                Optional<RolePermission> existsRolePermission = rolePermissionRepository.findOne(example);
+                Example<SysRolePermission> example = Example.of(rolePermission);
+                Optional<SysRolePermission> existsRolePermission = rolePermissionRepository.findOne(example);
                 //如果不存在,则需要新增
                 if(!existsRolePermission.isPresent()) {
                     rpList.add(rolePermission);
@@ -120,11 +116,11 @@ public class RoleServiceImpl implements RoleService {
             //取消授权
             List<Object> listUncheck = mapper.readValue(idsUncheck, new TypeReference<List<Object>>(){});
             for (Object o : listUncheck) {
-                RolePermission rolePermission = new RolePermission();
+                SysRolePermission rolePermission = new SysRolePermission();
                 rolePermission.setRoleId(Integer.valueOf(roleId));
                 rolePermission.setPermissionId(Integer.valueOf(o.toString()));
-                Example<RolePermission> example = Example.of(rolePermission);
-                Optional<RolePermission> unRolePermission = rolePermissionRepository.findOne(example);
+                Example<SysRolePermission> example = Example.of(rolePermission);
+                Optional<SysRolePermission> unRolePermission = rolePermissionRepository.findOne(example);
                 //如果存在,则删除
                 if(unRolePermission.isPresent()) {
                     rpunList.add(unRolePermission.get());
@@ -139,7 +135,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<Role> findAll() {
+    public List<SysRole> findAll() {
         return roleRepository.findAll();
     }
 }

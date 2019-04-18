@@ -9,12 +9,18 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name="sys_permission")
-public class Permission implements Serializable {
+public class SysPermission implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
+
+	private String action;
+
+	private String code;
+
+	private String icon;
 
 	@Column(name="is_button")
 	private Integer isButton;
@@ -29,11 +35,9 @@ public class Permission implements Serializable {
 
 	private Integer sorting;
 
-	private String action;
+	private String type;
 
-	private String code;
-
-	public Permission() {
+	public SysPermission() {
 	}
 
 	public Integer getId() {
@@ -42,6 +46,30 @@ public class Permission implements Serializable {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getAction() {
+		return this.action;
+	}
+
+	public void setAction(String action) {
+		this.action = action;
+	}
+
+	public String getCode() {
+		return this.code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getIcon() {
+		return this.icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
 	}
 
 	public Integer getIsButton() {
@@ -84,19 +112,12 @@ public class Permission implements Serializable {
 		this.sorting = sorting;
 	}
 
-    public String getAction() {
-        return action;
-    }
-
-    public void setAction(String action) {
-        this.action = action;
-    }
-
-    public String getCode() {
-		return code;
+	public String getType() {
+		return this.type;
 	}
 
-	public void setCode(String code) {
-		this.code = code;
+	public void setType(String type) {
+		this.type = type;
 	}
+
 }

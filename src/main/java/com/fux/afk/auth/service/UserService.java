@@ -1,6 +1,6 @@
 package com.fux.afk.auth.service;
 
-import com.fux.afk.auth.entity.User;
+import com.fux.afk.auth.entity.SysUser;
 import com.fux.afk.support.vo.BootstrapTable;
 import com.fux.afk.support.vo.ResultVo;
 import com.fux.afk.support.vo.SearchVo;
@@ -10,13 +10,13 @@ import com.fux.afk.support.vo.SearchVo;
  */
 public interface UserService {
 
-    User getUser(String username);
+    SysUser getUser(String username);
 
     BootstrapTable list(SearchVo search);
 
-    ResultVo saveOrUpdate(User user, Integer roleId);
+    ResultVo saveOrUpdate(SysUser user, Integer roleId);
 
-    User getUserById(Integer id);
+    SysUser getUserById(Integer id);
 
     ResultVo delete(String id);
 }
