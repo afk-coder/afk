@@ -2,6 +2,7 @@ package com.fux.afk.auth.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 
 /**
@@ -12,39 +13,50 @@ import java.io.Serializable;
 public class SysPermission implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "id_sys_permission_generator")
+    @TableGenerator(name = "id_sys_permission_generator",
+            table = "sys_identity",
+            pkColumnName = "table_name",
+            pkColumnValue = "sys_permission",
+            valueColumnName = "next_increment_val",
+            initialValue = 10000000, allocationSize = 1)
+	private BigDecimal id;
 
+    @Column(name="action", length = 50)
 	private String action;
 
+    @Column(name="code", length = 50)
 	private String code;
 
+    @Column(name="icon", length = 50)
 	private String icon;
 
 	@Column(name="is_button")
-	private Integer isButton;
+	private BigDecimal isButton;
 
 	@Column(name="is_menu")
-	private Integer isMenu;
+	private BigDecimal isMenu;
 
+    @Column(name="name", length = 50)
 	private String name;
 
 	@Column(name="parent_id")
-	private Integer parentId;
+	private BigDecimal parentId;
 
-	private Integer sorting;
+	private BigDecimal sorting;
 
+    @Column(name="type", length = 10)
 	private String type;
 
 	public SysPermission() {
 	}
 
-	public Integer getId() {
+	public BigDecimal getId() {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(BigDecimal id) {
 		this.id = id;
 	}
 
@@ -72,19 +84,19 @@ public class SysPermission implements Serializable {
 		this.icon = icon;
 	}
 
-	public Integer getIsButton() {
+	public BigDecimal getIsButton() {
 		return this.isButton;
 	}
 
-	public void setIsButton(Integer isButton) {
+	public void setIsButton(BigDecimal isButton) {
 		this.isButton = isButton;
 	}
 
-	public Integer getIsMenu() {
+	public BigDecimal getIsMenu() {
 		return this.isMenu;
 	}
 
-	public void setIsMenu(Integer isMenu) {
+	public void setIsMenu(BigDecimal isMenu) {
 		this.isMenu = isMenu;
 	}
 
@@ -96,19 +108,19 @@ public class SysPermission implements Serializable {
 		this.name = name;
 	}
 
-	public Integer getParentId() {
+	public BigDecimal getParentId() {
 		return this.parentId;
 	}
 
-	public void setParentId(Integer parentId) {
+	public void setParentId(BigDecimal parentId) {
 		this.parentId = parentId;
 	}
 
-	public Integer getSorting() {
+	public BigDecimal getSorting() {
 		return this.sorting;
 	}
 
-	public void setSorting(Integer sorting) {
+	public void setSorting(BigDecimal sorting) {
 		this.sorting = sorting;
 	}
 

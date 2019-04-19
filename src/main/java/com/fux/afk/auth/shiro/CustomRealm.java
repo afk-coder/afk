@@ -1,8 +1,8 @@
 package com.fux.afk.auth.shiro;
 
-import com.fux.afk.auth.entity.Permission;
-import com.fux.afk.auth.entity.Role;
-import com.fux.afk.auth.entity.User;
+import com.fux.afk.auth.entity.SysPermission;
+import com.fux.afk.auth.entity.SysRole;
+import com.fux.afk.auth.entity.SysUser;
 import com.fux.afk.auth.service.PermissionService;
 import com.fux.afk.auth.service.RoleService;
 import com.fux.afk.auth.service.UserService;
@@ -50,15 +50,15 @@ public class CustomRealm extends AuthorizingRealm {
         List<String> roleList = new ArrayList<>();
         List<String> permissionList = new ArrayList<>();
         // 从数据库中获取当前登录用户的详细信息
-        User user = userService.getUser(username);
+        SysUser user = userService.getUser(username);
         if (null != user) {
             //获取用户角色
-            List<Role> roles = roleService.getListByUserId(user.getId());
-            for (Role role : roles) {
+            List<SysRole> roles = roleService.getListByUserId(user.getId());
+            for (SysRole role : roles) {
                 roleList.add(role.getRoleName());
                 //获取角色权限
-                List<Permission> permissions = permissionService.getListByRoleId(role.getId());
-                for (Permission permission : permissions) {
+                List<SysPermission> permissions = permissionService.getListByRoleId(role.getId());
+                for (SysPermission permission : permissions) {
                     permissionList.add(permission.getCode());
                 }
             }
@@ -85,7 +85,7 @@ public class CustomRealm extends AuthorizingRealm {
         // 实际上这个authcToken是从AdminController里面currentUser.login(token)传过来的
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
 //        System.err.println("验证当前Subject时获取到token为" + ReflectionToStringBuilder.toString(token, ToStringStyle.MULTI_LINE_STYLE));
-        User user = userService.getUser(token.getUsername());
+        SysUser user = userService.getUser(token.getUsername());
         if(null != user) {
             AuthenticationInfo authcInfo = new SimpleAuthenticationInfo(user.getName(), user.getPassword(), ByteSource.Util.bytes(user.getName()), user.getName());
             this.setSession(CustomRealm.SESSION_USER_KEY, user);

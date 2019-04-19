@@ -5,6 +5,7 @@ import com.fux.afk.support.vo.BootstrapTable;
 import com.fux.afk.support.vo.ResultVo;
 import com.fux.afk.support.vo.SearchVo;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -12,15 +13,15 @@ import java.util.List;
  */
 public interface RoleService {
 
-    List<SysRole> getListByUserId(Integer userId);
+    List<SysRole> getListByUserId(BigDecimal userId);
 
     BootstrapTable list(SearchVo search);
 
-    SysRole getRoleById(Integer id);
+    SysRole getRoleById(BigDecimal id);
 
     ResultVo saveOrUpdate(SysRole user);
 
-    ResultVo delete(String id);
+    ResultVo delete(BigDecimal id);
 
     ResultVo saveGrant(String roleId, String ids, String idsUncheck);
 

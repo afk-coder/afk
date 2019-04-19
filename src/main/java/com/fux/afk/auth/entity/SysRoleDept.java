@@ -1,7 +1,8 @@
 package com.fux.afk.auth.entity;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
+import java.math.BigDecimal;
 
 
 /**
@@ -10,42 +11,49 @@ import javax.persistence.*;
 @Entity
 @Table(name="sys_role_dept")
 public class SysRoleDept implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "id_sys_role_dept_generator")
+    @TableGenerator(name = "id_sys_role_dept_generator",
+            table = "sys_identity",
+            pkColumnName = "table_name",
+            pkColumnValue = "sys_role_dept",
+            valueColumnName = "next_increment_val",
+            initialValue = 10000000, allocationSize = 1)
+    private BigDecimal id;
 
-	@Column(name="dept_id")
-	private Integer deptId;
+    @Column(name="dept_id")
+	private BigDecimal deptId;
 
 	@Column(name="role_id")
-	private Integer roleId;
+	private BigDecimal roleId;
 
 	public SysRoleDept() {
 	}
 
-	public Integer getId() {
+	public BigDecimal getId() {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(BigDecimal id) {
 		this.id = id;
 	}
 
-	public Integer getDeptId() {
+	public BigDecimal getDeptId() {
 		return this.deptId;
 	}
 
-	public void setDeptId(Integer deptId) {
+	public void setDeptId(BigDecimal deptId) {
 		this.deptId = deptId;
 	}
 
-	public Integer getRoleId() {
+	public BigDecimal getRoleId() {
 		return this.roleId;
 	}
 
-	public void setRoleId(Integer roleId) {
+	public void setRoleId(BigDecimal roleId) {
 		this.roleId = roleId;
 	}
 

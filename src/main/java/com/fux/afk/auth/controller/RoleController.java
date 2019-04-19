@@ -1,12 +1,13 @@
 package com.fux.afk.auth.controller;
 
-import com.fux.afk.auth.entity.Permission;
+import com.fux.afk.auth.entity.SysPermission;
 import com.fux.afk.auth.entity.SysRole;
 import com.fux.afk.auth.service.PermissionService;
 import com.fux.afk.auth.service.RoleService;
 import com.fux.afk.support.vo.BootstrapTable;
 import com.fux.afk.support.vo.ResultVo;
 import com.fux.afk.support.vo.SearchVo;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,21 +37,24 @@ public class RoleController {
     private PermissionService permissionService;
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
+//    @RequiresPermissions("role:list")
     public String listView() {
         return "/auth/role/list";
     }
 
     @RequestMapping(value = "list", method = RequestMethod.POST)
     @ResponseBody
+//    @RequiresPermissions("role:list")
     public BootstrapTable list(SearchVo search) {
         return roleService.list(search);
     }
 
     @RequestMapping(value = "add", method = RequestMethod.GET)
+//    @RequiresPermissions("role:add")
     public String addView(HttpServletRequest request, Model model) {
         String id = request.getParameter("id");
         if(!StringUtils.isEmpty(id)) {
-            SysRole role = roleService.getRoleById(Integer.valueOf(id));
+            SysRole role = roleService.getRoleById(new BigDecimal(id));
             model.addAttribute("role", role);
         }
         return "/auth/role/add";
@@ -57,24 +62,26 @@ public class RoleController {
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
     @ResponseBody
+//    @RequiresPermissions("role:add")
     public ResultVo add(SysRole role) {
         return roleService.saveOrUpdate(role);
     }
 
     @RequestMapping(value = "delete", method = RequestMethod.POST)
     @ResponseBody
-    public ResultVo delete(HttpServletRequest request) {
-        String id = request.getParameter("id");
+    @RequiresPermissions("role:delete")
+    public ResultVo delete(BigDecimal id) {
         return roleService.delete(id);
     }
 
     @RequestMapping(value = "grant", method = RequestMethod.GET)
+    @RequiresPermissions("role:grant")
     public String grantView(HttpServletRequest request, Model model) {
         String id = request.getParameter("id");
-        SysRole role = roleService.getRoleById(Integer.valueOf(id));
-        List<Permission> list = permissionService.getListByRoleId(role.getId());
-        List<Integer> checkIds = new ArrayList<>();
-        for (Permission permission : list) {
+        SysRole role = roleService.getRoleById(new BigDecimal(id));
+        List<SysPermission> list = permissionService.getListByRoleId(role.getId());
+        List<BigDecimal> checkIds = new ArrayList<>();
+        for (SysPermission permission : list) {
             checkIds.add(permission.getId());
         }
         model.addAttribute("role", role);
@@ -87,14 +94,14 @@ public class RoleController {
     public List<Map<String, Object>> listCheck(HttpServletRequest request) {
         String id = request.getParameter("id");
         List<Map<String, Object>> result = new ArrayList<>();
-        List<Permission> list = permissionService.list();
-        for (Permission permission : list) {
+        List<SysPermission> list = permissionService.list();
+        for (SysPermission permission : list) {
             Map<String, Object> map = new HashMap<>();
             map.put("id", permission.getId());
             map.put("parentId", permission.getParentId());
             map.put("name", permission.getName());
-            List<Permission> listCheck = permissionService.getListByRoleId(Integer.valueOf(id));
-            for (Permission permission1 : listCheck) {
+            List<SysPermission> listCheck = permissionService.getListByRoleId(new BigDecimal(id));
+            for (SysPermission permission1 : listCheck) {
                 if(permission.getId().equals(permission1.getId())) {
                     map.put("checked", true);
                 }
@@ -106,6 +113,7 @@ public class RoleController {
 
     @RequestMapping(value = "grant", method = RequestMethod.POST)
     @ResponseBody
+    @RequiresPermissions("role:grant")
     public ResultVo grant(HttpServletRequest request) {
         String roleId = request.getParameter("roleId");
         String ids = request.getParameter("ids");

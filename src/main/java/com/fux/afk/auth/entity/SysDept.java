@@ -2,6 +2,7 @@ package com.fux.afk.auth.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 
 /**
@@ -12,36 +13,53 @@ import java.io.Serializable;
 public class SysDept implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "id_sys_dept_generator")
+    @TableGenerator(name = "id_sys_dept_generator",
+            table = "sys_identity",
+            pkColumnName = "table_name",
+            pkColumnValue = "sys_dept",
+            valueColumnName = "next_increment_val",
+            initialValue = 10000000, allocationSize = 1)
+    private BigDecimal id;
 
-	@Column(name="del_flag")
+    /**
+     * 删除标识 0 删除、 1 存在
+     */
+	@Column(name="del_flag", length = 10)
 	private String delFlag;
 
+    @Column(name="email", length = 50)
 	private String email;
 
+    @Column(name="leader", length = 50)
 	private String leader;
 
+    @Column(name="name", length = 50)
 	private String name;
 
 	@Column(name="parent_id")
-	private Integer parentId;
+	private BigDecimal parentId;
 
+    @Column(name="phone", length = 20)
 	private String phone;
 
-	private Integer sorting;
+	private BigDecimal sorting;
 
+    /**
+     * 部门状态 0 停用、1 正常
+     */
+    @Column(name="status", length = 10)
 	private String status;
 
 	public SysDept() {
 	}
 
-	public Integer getId() {
+	public BigDecimal getId() {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(BigDecimal id) {
 		this.id = id;
 	}
 
@@ -77,11 +95,11 @@ public class SysDept implements Serializable {
 		this.name = name;
 	}
 
-	public Integer getParentId() {
+	public BigDecimal getParentId() {
 		return this.parentId;
 	}
 
-	public void setParentId(Integer parentId) {
+	public void setParentId(BigDecimal parentId) {
 		this.parentId = parentId;
 	}
 
@@ -93,11 +111,11 @@ public class SysDept implements Serializable {
 		this.phone = phone;
 	}
 
-	public Integer getSorting() {
+	public BigDecimal getSorting() {
 		return this.sorting;
 	}
 
-	public void setSorting(Integer sorting) {
+	public void setSorting(BigDecimal sorting) {
 		this.sorting = sorting;
 	}
 

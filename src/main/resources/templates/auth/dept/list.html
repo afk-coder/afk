@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>H+ 后台主题UI框架 - 树形视图</title>
+    <title>部门管理</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
     <link th:href="@{/support/css/bootstrap.min.css}" rel="stylesheet">
@@ -50,7 +50,6 @@
             }
         }
     };
-
     $(document).ready(function () {
         initTree();
         $('#add').click(function () {
@@ -69,7 +68,7 @@
                 title: '功能管理新增',
                 maxmin: false,
                 type: 2,
-                content: '/auth/permission/add?parentId='+parentId,
+                content: '/auth/dept/add?parentId='+parentId,
                 area: ['600px', '700px']
             });
         });
@@ -82,7 +81,7 @@
                     title: '功能管理修改',
                     maxmin: false,
                     type: 2,
-                    content: '/auth/permission/update?id='+nodes[0].id,
+                    content: '/auth/dept/update?id='+nodes[0].id,
                     area: ['600px', '700px']
                 });
             }
@@ -98,7 +97,7 @@
                     var lid = layer.msg('正在处理中，请稍后', {icon: 16, shade: 0.4, time: false});
                     $.ajax({
                         type: "POST",
-                        url: "/auth/permission/delete",
+                        url: "/auth/dept/delete",
                         dataType:'json',
                         data:{
                             id: nodes[0].id
@@ -133,7 +132,7 @@
     function initTree() {
         $.ajax({
             type: "POST",
-            url: "/auth/permission/list",
+            url: "/auth/dept/list",
             dataType:'json',
             success: function(data){
                 $.fn.zTree.init($("#ztree"), setting, data);

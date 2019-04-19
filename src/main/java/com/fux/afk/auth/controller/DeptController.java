@@ -1,7 +1,7 @@
 package com.fux.afk.auth.controller;
 
-import com.fux.afk.auth.entity.SysPermission;
-import com.fux.afk.auth.service.PermissionService;
+import com.fux.afk.auth.entity.SysDept;
+import com.fux.afk.auth.service.DeptService;
 import com.fux.afk.support.vo.ResultVo;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,67 +16,66 @@ import java.math.BigDecimal;
 import java.util.List;
 
 /**
- * Created by fuxj on 2019/3/14
+ * Created by fuxj on 2019-4-19
  */
 @Controller
-@RequestMapping("/auth/permission")
-public class PermissionController {
+@RequestMapping("/auth/dept")
+public class DeptController {
 
     @Autowired
-    private PermissionService permissionService;
+    private DeptService deptService;
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
-    @RequiresPermissions("permission:list")
+    @RequiresPermissions("dept:list")
     public String listView() {
-        return "/auth/permission/list";
+        return "/auth/dept/list";
     }
 
     @RequestMapping(value = "list", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions("permission:list")
-    public List<SysPermission> list() {
-        return permissionService.list();
+    @RequiresPermissions("dept:list")
+    public List<SysDept> list() {
+        return deptService.list();
     }
 
     @RequestMapping(value = "add", method = RequestMethod.GET)
-    @RequiresPermissions("permission:add")
+    @RequiresPermissions("dept:add")
     public String addView(HttpServletRequest request, Model model) {
         String parentId = request.getParameter("parentId");
         if (!"0".equals(parentId)) {
-            SysPermission permission = permissionService.getPermissionById(new BigDecimal(parentId));
-            model.addAttribute("permission", permission);
+            SysDept dept = deptService.getDeptById(new BigDecimal(parentId));
+            model.addAttribute("dept", dept);
         }
-        return "/auth/permission/add";
+        return "/auth/dept/add";
     }
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions("permission:add")
-    public ResultVo add(SysPermission permission) {
-        return permissionService.saveOrUpdate(permission);
+    @RequiresPermissions("dept:add")
+    public ResultVo add(SysDept dept) {
+        return deptService.saveOrUpdate(dept);
     }
 
     @RequestMapping(value = "update", method = RequestMethod.GET)
-    @RequiresPermissions("permission:update")
+    @RequiresPermissions("dept:update")
     public String updateView(HttpServletRequest request, Model model) {
         String id = request.getParameter("id");
-        SysPermission permission = permissionService.getPermissionById(new BigDecimal(id));
-        model.addAttribute("permission", permission);
-        return "/auth/permission/update";
+        SysDept dept = deptService.getDeptById(new BigDecimal(id));
+        model.addAttribute("dept", dept);
+        return "/auth/dept/update";
     }
 
     @RequestMapping(value = "update", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions("permission:update")
-    public ResultVo update(SysPermission permission) {
-        return permissionService.saveOrUpdate(permission);
+    @RequiresPermissions("dept:update")
+    public ResultVo update(SysDept dept) {
+        return deptService.saveOrUpdate(dept);
     }
 
     @RequestMapping(value = "delete", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions("permission:delete")
+    @RequiresPermissions("dept:delete")
     public ResultVo delete(BigDecimal id) {
-        return permissionService.delete(id);
+        return deptService.delete(id);
     }
-
 }

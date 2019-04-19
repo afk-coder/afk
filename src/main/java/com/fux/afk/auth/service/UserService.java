@@ -5,6 +5,8 @@ import com.fux.afk.support.vo.BootstrapTable;
 import com.fux.afk.support.vo.ResultVo;
 import com.fux.afk.support.vo.SearchVo;
 
+import java.math.BigDecimal;
+
 /**
  * Created by fuxj on 2019/3/6
  */
@@ -14,9 +16,9 @@ public interface UserService {
 
     BootstrapTable list(SearchVo search);
 
-    ResultVo saveOrUpdate(SysUser user, Integer roleId);
+    ResultVo saveOrUpdate(SysUser user, BigDecimal roleId);
 
-    SysUser getUserById(Integer id);
+    SysUser getUserById(BigDecimal id);
 
-    ResultVo delete(String id);
+    ResultVo delete(BigDecimal id);
 }

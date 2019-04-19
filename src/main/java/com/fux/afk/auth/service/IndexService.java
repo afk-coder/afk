@@ -2,6 +2,7 @@ package com.fux.afk.auth.service;
 
 import com.fux.afk.auth.entity.SysPermission;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -9,5 +10,5 @@ import java.util.List;
  */
 public interface IndexService {
 
-    List<SysPermission> findPermissionByUserId(Integer userId);
+    List<SysPermission> findPermissionByUserId(BigDecimal userId);
 }

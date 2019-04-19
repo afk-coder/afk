@@ -7,6 +7,7 @@ import com.fux.afk.auth.service.UserService;
 import com.fux.afk.support.vo.BootstrapTable;
 import com.fux.afk.support.vo.ResultVo;
 import com.fux.afk.support.vo.SearchVo;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -32,23 +34,26 @@ public class UserController {
     private RoleService roleService;
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
+//    @RequiresPermissions("user:list")
     public String listView() {
         return "/auth/user/list";
     }
 
     @RequestMapping(value = "list", method = RequestMethod.POST)
     @ResponseBody
+//    @RequiresPermissions("user:list")
     public BootstrapTable list(SearchVo search) {
         return userService.list(search);
     }
 
     @RequestMapping(value = "add", method = RequestMethod.GET)
+//    @RequiresPermissions("user:add")
     public String addView(HttpServletRequest request, Model model) {
         String id = request.getParameter("id");
         if(!StringUtils.isEmpty(id)) {
-            SysUser user = userService.getUserById(Integer.valueOf(id));
+            SysUser user = userService.getUserById(new BigDecimal(id));
             model.addAttribute("user", user);
-            List<SysRole> existsRole = roleService.getListByUserId(Integer.valueOf(id));
+            List<SysRole> existsRole = roleService.getListByUserId(new BigDecimal(id));
             model.addAttribute("existsRole", existsRole.get(0));
         }
         List<SysRole> listRole = roleService.findAll();
@@ -58,14 +63,15 @@ public class UserController {
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
     @ResponseBody
-    public ResultVo add(SysUser user, Integer roleId) {
+//    @RequiresPermissions("user:add")
+    public ResultVo add(SysUser user, BigDecimal roleId) {
         return userService.saveOrUpdate(user, roleId);
     }
 
     @RequestMapping(value = "delete", method = RequestMethod.POST)
     @ResponseBody
-    public ResultVo delete(HttpServletRequest request) {
-        String id = request.getParameter("id");
+    @RequiresPermissions("user:delete")
+    public ResultVo delete(BigDecimal id) {
         return userService.delete(id);
     }
 }

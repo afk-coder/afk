@@ -6,6 +6,7 @@ import com.fux.afk.auth.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ public class IndexServiceImpl implements IndexService {
     private PermissionRepository permissoinRepository;
 
     @Override
-    public List<SysPermission> findPermissionByUserId(Integer userId) {
+    public List<SysPermission> findPermissionByUserId(BigDecimal userId) {
         return permissoinRepository.findAllByUserId(userId);
     }
 }

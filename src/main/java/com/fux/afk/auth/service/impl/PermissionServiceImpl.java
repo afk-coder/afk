@@ -6,8 +6,10 @@ import com.fux.afk.auth.repository.PermissionRepository;
 import com.fux.afk.auth.service.PermissionService;
 import com.fux.afk.support.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -20,17 +22,18 @@ public class PermissionServiceImpl implements PermissionService {
     private PermissionRepository permissionRepository;
 
     @Override
-    public List<SysPermission> getListByRoleId(Integer roleId) {
+    public List<SysPermission> getListByRoleId(BigDecimal roleId) {
         return permissionRepository.findAllByRoleId(roleId);
     }
 
     @Override
     public List<SysPermission> list() {
-        return permissionRepository.findAll();
+        Sort sort = new Sort(Sort.Direction.ASC, "sorting");
+        return permissionRepository.findAll(sort);
     }
 
     @Override
-    public SysPermission getPermissionById(Integer id) {
+    public SysPermission getPermissionById(BigDecimal id) {
         return permissionRepository.getOne(id);
     }
 
@@ -47,7 +50,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public ResultVo delete(Integer id) {
+    public ResultVo delete(BigDecimal id) {
         try {
             permissionRepository.deleteById(id);
             return ResultVo.successInfo("删除成功");

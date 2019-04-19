@@ -1,8 +1,8 @@
 package com.fux.afk.auth.entity;
 
-import java.io.Serializable;
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 
@@ -16,39 +16,52 @@ public class SysUser implements Serializable {
 	private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "id_sys_user_generator")
+    @TableGenerator(name = "id_sys_user_generator",
+            table = "sys_identity",
+            pkColumnName = "table_name",
+            pkColumnValue = "sys_user",
+            valueColumnName = "next_increment_val",
+            initialValue = 10000000, allocationSize = 1)
+    private BigDecimal id;
 
+    @Column(name="avatar", length = 50)
 	private String avatar;
 
 	@Column(name="create_time")
 	private Date createTime;
 
 	@Column(name="dept_id")
-	private int deptId;
+	private BigDecimal deptId;
 
+    @Column(name="email", length = 20)
 	private String email;
 
-	@Column(name="is_enabled")
+	@Column(name="is_enabled", length = 20)
 	private String isEnabled;
 
-	@Column(name="login_ip")
+	@Column(name="login_ip", length = 20)
 	private String loginIp;
 
 	@Column(name="login_time")
 	private Date loginTime;
 
+    @Column(name="name", length = 20)
 	private String name;
 
+    @Column(name="password", length = 20)
 	private String password;
 
+    @Column(name="phone", length = 20)
 	private String phone;
 
-	@Column(name="real_name")
+    @Column(name="real_name", length = 50)
 	private String realName;
 
+    @Column(name="salt", length = 50)
 	private String salt;
 
+    @Column(name="sex", length = 10)
 	private String sex;
 
 	@Column(name="update_time")
@@ -60,11 +73,11 @@ public class SysUser implements Serializable {
 	public SysUser() {
 	}
 
-	public Integer getId() {
+	public BigDecimal getId() {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(BigDecimal id) {
 		this.id = id;
 	}
 
@@ -84,11 +97,11 @@ public class SysUser implements Serializable {
 		this.createTime = createTime;
 	}
 
-	public int getDeptId() {
+	public BigDecimal getDeptId() {
 		return this.deptId;
 	}
 
-	public void setDeptId(int deptId) {
+	public void setDeptId(BigDecimal deptId) {
 		this.deptId = deptId;
 	}
 

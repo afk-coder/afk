@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Optional;
 
@@ -50,7 +51,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResultVo saveOrUpdate(SysUser user, Integer roleId) {
+    public ResultVo saveOrUpdate(SysUser user, BigDecimal roleId) {
         try {
             //判断用户名是否存在
             SysUser existsUser = userRepository.getUserByName(user.getName());
@@ -96,14 +97,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public SysUser getUserById(Integer id) {
+    public SysUser getUserById(BigDecimal id) {
         return userRepository.getOne(id);
     }
 
     @Override
-    public ResultVo delete(String id) {
+    public ResultVo delete(BigDecimal id) {
         try {
-            userRepository.deleteById(Integer.valueOf(id));
+            userRepository.deleteById(id);
             return ResultVo.successInfo("删除成功！");
         } catch (NumberFormatException e) {
             e.printStackTrace();

@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +38,7 @@ public class RoleServiceImpl implements RoleService {
     private RolePermissionRepository rolePermissionRepository;
 
     @Override
-    public List<SysRole> getListByUserId(Integer userId) {
+    public List<SysRole> getListByUserId(BigDecimal userId) {
        return roleRepository.findAllByUserId(userId);
     }
 
@@ -45,14 +46,14 @@ public class RoleServiceImpl implements RoleService {
     public BootstrapTable list(SearchVo search) {
         SysRole role = new SysRole();
         role.setRoleName(MapUtils.getString(search.getArgs(), "roleName"));
-        Example<SysRole> example = Example.of(role);
+        Example<SysRole> roleExample = Example.of(role);
         Pageable pageable = PageRequest.of(search.getPage() - 1, search.getRows());
-        Page<SysRole> page = roleRepository.findAll(example, pageable);
+        Page<SysRole> page = roleRepository.findAll(roleExample, pageable);
         return new BootstrapTable(page);
     }
 
     @Override
-    public SysRole getRoleById(Integer id) {
+    public SysRole getRoleById(BigDecimal id) {
         return roleRepository.getOne(id);
     }
 
@@ -80,9 +81,9 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public ResultVo delete(String id) {
+    public ResultVo delete(BigDecimal id) {
         try {
-            roleRepository.deleteById(Integer.valueOf(id));
+            roleRepository.deleteById(id);
             return ResultVo.successInfo("删除成功！");
         } catch (NumberFormatException e) {
             e.printStackTrace();
@@ -103,8 +104,8 @@ public class RoleServiceImpl implements RoleService {
             for (Object o : list) {
                 //获取该角色已存在的权限
                 SysRolePermission rolePermission = new SysRolePermission();
-                rolePermission.setRoleId(Integer.valueOf(roleId));
-                rolePermission.setPermissionId(Integer.valueOf(o.toString()));
+                rolePermission.setRoleId(new BigDecimal(roleId));
+                rolePermission.setPermissionId(new BigDecimal(o.toString()));
                 Example<SysRolePermission> example = Example.of(rolePermission);
                 Optional<SysRolePermission> existsRolePermission = rolePermissionRepository.findOne(example);
                 //如果不存在,则需要新增
@@ -117,8 +118,8 @@ public class RoleServiceImpl implements RoleService {
             List<Object> listUncheck = mapper.readValue(idsUncheck, new TypeReference<List<Object>>(){});
             for (Object o : listUncheck) {
                 SysRolePermission rolePermission = new SysRolePermission();
-                rolePermission.setRoleId(Integer.valueOf(roleId));
-                rolePermission.setPermissionId(Integer.valueOf(o.toString()));
+                rolePermission.setRoleId(new BigDecimal(roleId));
+                rolePermission.setPermissionId(new BigDecimal(o.toString()));
                 Example<SysRolePermission> example = Example.of(rolePermission);
                 Optional<SysRolePermission> unRolePermission = rolePermissionRepository.findOne(example);
                 //如果存在,则删除
