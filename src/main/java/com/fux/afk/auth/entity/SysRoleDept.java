@@ -22,12 +22,13 @@ public class SysRoleDept implements Serializable {
             pkColumnValue = "sys_role_dept",
             valueColumnName = "next_increment_val",
             initialValue = 10000000, allocationSize = 1)
+    @Column(name = "id", precision = 19, scale = 0)
     private BigDecimal id;
 
-    @Column(name="dept_id")
+    @Column(name="dept_id", precision = 19, scale = 0)
 	private BigDecimal deptId;
 
-	@Column(name="role_id")
+	@Column(name="role_id", precision = 19, scale = 0)
 	private BigDecimal roleId;
 
 	public SysRoleDept() {

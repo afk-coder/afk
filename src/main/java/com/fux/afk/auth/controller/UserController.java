@@ -34,20 +34,20 @@ public class UserController {
     private RoleService roleService;
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
-//    @RequiresPermissions("user:list")
+    @RequiresPermissions("user:list")
     public String listView() {
         return "/auth/user/list";
     }
 
     @RequestMapping(value = "list", method = RequestMethod.POST)
     @ResponseBody
-//    @RequiresPermissions("user:list")
+    @RequiresPermissions("user:list")
     public BootstrapTable list(SearchVo search) {
         return userService.list(search);
     }
 
     @RequestMapping(value = "add", method = RequestMethod.GET)
-//    @RequiresPermissions("user:add")
+    @RequiresPermissions("user:add")
     public String addView(HttpServletRequest request, Model model) {
         String id = request.getParameter("id");
         if(!StringUtils.isEmpty(id)) {
@@ -63,7 +63,7 @@ public class UserController {
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
     @ResponseBody
-//    @RequiresPermissions("user:add")
+    @RequiresPermissions("user:add")
     public ResultVo add(SysUser user, BigDecimal roleId) {
         return userService.saveOrUpdate(user, roleId);
     }

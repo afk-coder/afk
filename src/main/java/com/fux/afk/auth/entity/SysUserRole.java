@@ -22,13 +22,13 @@ public class SysUserRole implements Serializable {
             pkColumnValue = "sys_user_role",
             valueColumnName = "next_increment_val",
             initialValue = 10000000, allocationSize = 1)
-    @Column(name = "id")
+    @Column(name = "id", precision = 19, scale = 0)
     private BigDecimal id;
 
-	@Column(name="role_id")
+	@Column(name="role_id", precision = 19, scale = 0)
 	private BigDecimal roleId;
 
-	@Column(name="user_id")
+	@Column(name="user_id", precision = 19, scale = 0)
 	private BigDecimal userId;
 
 	public SysUserRole() {

@@ -21,6 +21,7 @@ public class SysPermission implements Serializable {
             pkColumnValue = "sys_permission",
             valueColumnName = "next_increment_val",
             initialValue = 10000000, allocationSize = 1)
+    @Column(name = "id", precision = 19, scale = 0)
 	private BigDecimal id;
 
     @Column(name="action", length = 50)
@@ -32,18 +33,19 @@ public class SysPermission implements Serializable {
     @Column(name="icon", length = 50)
 	private String icon;
 
-	@Column(name="is_button")
+	@Column(name="is_button", precision = 19, scale = 0)
 	private BigDecimal isButton;
 
-	@Column(name="is_menu")
+	@Column(name="is_menu", precision = 19, scale = 0)
 	private BigDecimal isMenu;
 
     @Column(name="name", length = 50)
 	private String name;
 
-	@Column(name="parent_id")
+	@Column(name="parent_id", precision = 19, scale = 0)
 	private BigDecimal parentId;
 
+    @Column(name="sorting", precision = 19, scale = 0)
 	private BigDecimal sorting;
 
     @Column(name="type", length = 10)

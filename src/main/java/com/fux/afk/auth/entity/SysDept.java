@@ -21,6 +21,7 @@ public class SysDept implements Serializable {
             pkColumnValue = "sys_dept",
             valueColumnName = "next_increment_val",
             initialValue = 10000000, allocationSize = 1)
+    @Column(name = "id", precision = 19, scale = 0)
     private BigDecimal id;
 
     /**
@@ -38,12 +39,13 @@ public class SysDept implements Serializable {
     @Column(name="name", length = 50)
 	private String name;
 
-	@Column(name="parent_id")
+	@Column(name="parent_id", precision = 19, scale = 0)
 	private BigDecimal parentId;
 
     @Column(name="phone", length = 20)
 	private String phone;
 
+    @Column(name="sorting", precision = 19, scale = 0)
 	private BigDecimal sorting;
 
     /**

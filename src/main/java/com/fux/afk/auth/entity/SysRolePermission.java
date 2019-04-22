@@ -22,12 +22,13 @@ public class SysRolePermission implements Serializable {
             pkColumnValue = "sys_role_permission",
             valueColumnName = "next_increment_val",
             initialValue = 10000000, allocationSize = 1)
+    @Column(name = "id", precision = 19, scale = 0)
     private BigDecimal id;
 
-	@Column(name="permission_id")
+	@Column(name="permission_id", precision = 19, scale = 0)
 	private BigDecimal permissionId;
 
-	@Column(name="role_id")
+	@Column(name="role_id", precision = 19, scale = 0)
 	private BigDecimal roleId;
 
 	public SysRolePermission() {

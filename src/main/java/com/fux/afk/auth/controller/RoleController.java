@@ -37,20 +37,20 @@ public class RoleController {
     private PermissionService permissionService;
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
-//    @RequiresPermissions("role:list")
+    @RequiresPermissions("role:list")
     public String listView() {
         return "/auth/role/list";
     }
 
     @RequestMapping(value = "list", method = RequestMethod.POST)
     @ResponseBody
-//    @RequiresPermissions("role:list")
+    @RequiresPermissions("role:list")
     public BootstrapTable list(SearchVo search) {
         return roleService.list(search);
     }
 
     @RequestMapping(value = "add", method = RequestMethod.GET)
-//    @RequiresPermissions("role:add")
+    @RequiresPermissions("role:add")
     public String addView(HttpServletRequest request, Model model) {
         String id = request.getParameter("id");
         if(!StringUtils.isEmpty(id)) {
@@ -62,7 +62,7 @@ public class RoleController {
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
     @ResponseBody
-//    @RequiresPermissions("role:add")
+    @RequiresPermissions("role:add")
     public ResultVo add(SysRole role) {
         return roleService.saveOrUpdate(role);
     }

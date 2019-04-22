@@ -21,6 +21,7 @@ public class SysRole implements Serializable {
             pkColumnValue = "sys_role",
             valueColumnName = "next_increment_val",
             initialValue = 10000000, allocationSize = 1)
+    @Column(name = "id", precision = 19, scale = 0)
     private BigDecimal id;
 
     @Column(name="del_flag", length = 10)
@@ -32,6 +33,7 @@ public class SysRole implements Serializable {
 	@Column(name="role_name", length = 50)
 	private String roleName;
 
+    @Column(name="sorting", precision = 19, scale = 0)
 	private BigDecimal sorting;
 
     @Column(name="status", length = 10)

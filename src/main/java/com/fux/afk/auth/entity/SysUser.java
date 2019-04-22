@@ -23,6 +23,7 @@ public class SysUser implements Serializable {
             pkColumnValue = "sys_user",
             valueColumnName = "next_increment_val",
             initialValue = 10000000, allocationSize = 1)
+    @Column(name = "id", precision = 19, scale = 0)
     private BigDecimal id;
 
     @Column(name="avatar", length = 50)
@@ -31,7 +32,7 @@ public class SysUser implements Serializable {
 	@Column(name="create_time")
 	private Date createTime;
 
-	@Column(name="dept_id")
+	@Column(name="dept_id", precision = 19, scale = 0)
 	private BigDecimal deptId;
 
     @Column(name="email", length = 20)
@@ -67,7 +68,7 @@ public class SysUser implements Serializable {
 	@Column(name="update_time")
 	private Date updateTime;
 
-	@Column(name="user_type")
+	@Column(name="user_type", length = 20)
 	private String userType;
 
 	public SysUser() {
