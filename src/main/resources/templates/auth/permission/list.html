@@ -35,24 +35,14 @@
 <script th:src="@{/support/js/bootstrap.min.js}"></script>
 <!-- 自定义js -->
 <script th:src="@{/support/js/content.js}"></script>
+<script th:src="@{/common/js/admin.base.js}"></script>
 <!-- jsTree plugin javascript -->
 <script th:src="@{/support/ztree/js/jquery.ztree.core.js}"></script>
 <script th:src="@{/support/js/plugins/layer/layer.min.js}"></script>
 <script type="text/javascript">
     var layerId;
-    var setting = {
-        data: {
-            simpleData: {
-                enable: true,
-                idKey: "id",
-                pIdKey: "parentId",
-                rootPId: 0
-            }
-        }
-    };
-
     $(document).ready(function () {
-        initTree();
+        initTree('/auth/permission/list');
         $('#add').click(function () {
             var treeObj = $.fn.zTree.getZTreeObj("ztree");
             var nodes = treeObj.getSelectedNodes(true);
@@ -129,17 +119,6 @@
             return true;
         }
     });
-
-    function initTree() {
-        $.ajax({
-            type: "POST",
-            url: "/auth/permission/list",
-            dataType:'json',
-            success: function(data){
-                $.fn.zTree.init($("#ztree"), setting, data);
-            }
-        });
-    }
 
     function layerClose() {
         initTree();

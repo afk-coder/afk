@@ -6,11 +6,13 @@
     <title>用户列表</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
+    <link th:href="@{/support/ztree/css/demo.css}" rel="stylesheet">
     <link th:href="@{/support/css/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{/support/css/font-awesome.css}" rel="stylesheet">
     <link th:href="@{/support/css/animate.css}" rel="stylesheet">
     <link th:href="@{/support/css/style.css}" rel="stylesheet">
     <link th:href="@{/support/css/plugins/bootstrap-table/bootstrap-table.min.css}" rel="stylesheet">
+    <link th:href="@{/support/ztree/css/metroStyle/metroStyle.css}" rel="stylesheet">
 </head>
 
 <body class="gray-bg">
@@ -20,6 +22,11 @@
             <div class="ibox">
                 <div class="ibox-content">
                     <form class="form-inline" id="myform">
+                        <div class="form-group">
+                            <label for="name">部门</label>
+                            <input id="deptId" type="hidden" />
+                            <input id="deptName" type="text" class="form-control" readonly value="" style="width:180px;" onclick="showTreeMenu();" />
+                        </div>
                         <div class="form-group">
                             <label for="name">用户名</label>
                             <input type="text" class="form-control" id="name" name="name" placeholder="输入用户名">
@@ -49,6 +56,9 @@
             </div>
         </div>
     </div>
+    <div id="menuContent" class="menuContent" style="display:none; position: absolute;">
+        <ul id="ztree" class="ztree" style="margin-top:0; width:180px; height: 300px;"></ul>
+    </div>
 </div>
 <!-- 全局js -->
 <script th:src="@{/support/js/jquery.min.js}"></script>
@@ -62,11 +72,14 @@
 <script th:src="@{/support/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js}"></script>
 <script th:src="@{/support/js/plugins/layer/layer.min.js}"></script>
 <script th:src="@{/support/js/jquery-date.js}"></script>
+
+<script th:src="@{/support/ztree/js/jquery.ztree.core.js}"></script>
 <script type="text/javascript">
     var layerId;
     var idx = 1;
     var url = '/auth/user/list';
     $(document).ready(function () {
+        initTree('/auth/dept/list');
         $('#queryTable').bootstrapTable({
             dataType: 'json',
             locale: 'zh-US',

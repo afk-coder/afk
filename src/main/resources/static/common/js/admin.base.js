@@ -23,3 +23,52 @@ function date_format(value, pattern) {
     }
     return new Date(value).format(pattern);
 }
+
+
+var setting = {
+    data: {
+        simpleData: {
+            enable: true,
+            idKey: "id",
+            pIdKey: "parentId",
+            rootPId: 0
+        }
+    },
+    callback: {
+        onClick: onTreeClick
+    }
+};
+
+function onTreeClick() {
+    var zTree = $.fn.zTree.getZTreeObj("ztree"),
+        nodes = zTree.getSelectedNodes();
+    $("#deptName").val(nodes[0].name);
+    $("#deptId").val(nodes[0].id);
+}
+
+function initTree(url) {
+    $.ajax({
+        type: "POST",
+        url: url,
+        dataType:'json',
+        success: function(data){
+            $.fn.zTree.init($("#ztree"), setting, data);
+        }
+    });
+}
+
+function showTreeMenu() {
+    var cityObj = $("#deptName");
+    var cityOffset = $("#deptName").offset();
+    $("#menuContent").css({left:cityOffset.left + "px", top:cityOffset.top + cityObj.outerHeight() + "px"}).slideDown("fast");
+    $("body").bind("mousedown", onBodyDown);
+}
+function hideTreeMenu() {
+    $("#menuContent").fadeOut("fast");
+    $("body").unbind("mousedown", onBodyDown);
+}
+function onBodyDown(event) {
+    if (!(event.target.id == "menuBtn" || event.target.id == "citySel" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length>0)) {
+        hideTreeMenu();
+    }
+}
